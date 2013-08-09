@@ -85,5 +85,6 @@ class domain_membership (
     command  => "netdom /RESETPWD /UserD:${username} /PasswordD:${_password} /Server:${domain}",
     unless   => "if ($(nltest /sc_verify:${domain}) -match 'ERROR_INVALID_PASSWORD') {exit 1}",
     provider => powershell,
+    require  => Exec['join_domain'],
   }
 }
