@@ -73,11 +73,17 @@ class domain_membership (
 
   # Since the powershell command is combersome, we'll construct it here for clarity... well, almost clarity
   #
-  $command = "(Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',${_password},'${username}@${domain}',${machine_ou},${fjoinoption})"
+  $command = "(Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',${_password},'${username}@${domain}',${_machine_ou},${fjoinoption})"
 
   exec { 'join_domain':
     command  => $command,
     unless   => "if((Get-WmiObject -Class Win32_ComputerSystem).domain -ne '${domain}'){ exit 1 }",
+    provider => powershell,
+  }
+
+  exec { 'reset_computer_trust':
+    command  => "netdom /RESETPWD /UserD:${username} /PasswordD:${_password} /Server:${domain}",
+    unless   => "if ($(nltest /sc_verify:${domain}) -match 'ERROR_INVALID_PASSWORD') {exit 1}",
     provider => powershell,
   }
 }
