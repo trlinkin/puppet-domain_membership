@@ -32,13 +32,14 @@ class domain_membership (
   $secure_password = false,
   $machine_ou      = undef,
   $force           = false,
+  $resetpw         = true,
 ){
 
   # Validate Parameters
   validate_string($username)
   validate_string($password)
   validate_bool($force)
-
+  validate_bool($resetpw)
   unless is_domain_name($domain) {
     fail('Class[domain_membership] domain parameter must be a valid rfc1035 domain name')
   }
@@ -81,10 +82,12 @@ class domain_membership (
     provider => powershell,
   }
 
-  exec { 'reset_computer_trust':
-    command  => "netdom /RESETPWD /UserD:${username} /PasswordD:${_password} /Server:${domain}",
-    unless   => "if ($(nltest /sc_verify:${domain}) -match 'ERROR_INVALID_PASSWORD') {exit 1}",
-    provider => powershell,
-    require  => Exec['join_domain'],
+  if $resetpw {
+    exec { 'reset_computer_trust':
+      command  => "netdom /RESETPWD /UserD:${username} /PasswordD:${_password} /Server:${domain}",
+      unless   => "if ($(nltest /sc_verify:${domain}) -match 'ERROR_INVALID_PASSWORD') {exit 1}",
+      provider => powershell,
+      require  => Exec['join_domain'],
+    }
   }
 }
