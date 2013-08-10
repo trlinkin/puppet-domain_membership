@@ -4,17 +4,36 @@
 #
 # === Parameters
 #
-# Document parameters here.
-#
 # [*domain*]
 #   Explanation of what this parameter affects and what it defaults to.
 #   e.g. "Specify one or more upstream ntp servers as an array."
 # [*username*]
+#   Username of domain user with machine join privileges.
+# [*password*]
+#   Password for domain user. This can optionally be passed as a "Secure
+#   String" if the `$secure_password` parameter is true.
+# [*secure_password*]
+#   Indicate that the password provided is a "Secure String." Valid values
+#   are `true` and `false`. Defaults to `false`.
+# [*machine_ou*]
+#   OU in the domain to create the machine account in. This is used durring
+#   the initial join process. It cannot move the machine account later on.
+# [*force*]
+#   Forces the machine to join a new domain even if it has prior membership
+#   to other domains. Valid values are `true` and `false`. Defaults to `false`.
+# [*resetpw*]
+#   Whether or not to force a machine password reset if for some reason the trust
+#   between the domain and the machine becomes unsyncronized. Valid values are `true`
+#   and `false`. Defaults to `true`.
 #
 # === Examples
 #
 #  class { domain_membership:
-#    domain => 'pupetlabs.lan',
+#    domain   => 'pupetlabs.lan',
+#    username => 'administrator',
+#    password => 'fake5ecret',
+#    force    => true,
+#    resetpw  => false,
 #  }
 #
 # === Authors
