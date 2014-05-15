@@ -12,6 +12,7 @@ Parameters
  * ```machine_ou``` - [Optional] OU in the directory for the machine account to be created in.
  * ```force```      - [Optional] Whether or not to attempt to force joining domain even if the machine already has a domain membership.Valid values are `true` and `false`. Defaults to `false`
  * ```resetpw```    - [Optional] Whetehr of not to force machine password reset if it becomes out of sync with the domain.
+ * ```fjoinoption```- [Optional] A bit flag for an option to use when joining the domain. See http://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx Defaults to '1'.
 
 Usage
 -----
