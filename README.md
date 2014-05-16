@@ -10,8 +10,8 @@ Parameters
  * ```username```   - User with ability to join machines to a Domain.
  * ```password```   - Password for domain joining user.
  * ```machine_ou``` - [Optional] OU in the directory for the machine account to be created in.
- * ```force```      - [Optional] Whether or not to attempt to force joining domain even if the machine already has a domain membership.Valid values are `true` and `false`. Defaults to `false`
- * ```resetpw```    - [Optional] Whetehr of not to force machine password reset if it becomes out of sync with the domain.
+ * ```force```      - [Optional] Boolean to attempt to force joining domain even if the machine already has a domain membership. Defaults to `false`.
+ * ```resetpw```    - [Optional] Boolean to force machine password reset if it becomes out of sync with the domain. Defaults to `true`.
 
 Usage
 -----
