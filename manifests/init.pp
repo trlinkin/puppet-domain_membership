@@ -25,6 +25,10 @@
 #   Whether or not to force a machine password reset if for some reason the trust
 #   between the domain and the machine becomes unsyncronized. Valid values are `true`
 #   and `false`. Defaults to `true`.
+# [*fjoinoption*]
+#   A bit flag for setting options for joining a domain.
+#   See: http://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx
+#   Defaults to '1'.
 #
 # === Examples
 #
@@ -52,6 +56,7 @@ class domain_membership (
   $machine_ou      = undef,
   $force           = false,
   $resetpw         = true,
+  $fjoinoption     = '1',
 ){
 
   # Validate Parameters
@@ -59,6 +64,7 @@ class domain_membership (
   validate_string($password)
   validate_bool($force)
   validate_bool($resetpw)
+  validate_re($fjoinoption, '\d+', 'fjoinoption parameter must be a number.')
   unless is_domain_name($domain) {
     fail('Class[domain_membership] domain parameter must be a valid rfc1035 domain name')
   }
@@ -86,14 +92,14 @@ class domain_membership (
   # 32 (0x20) Allows a join to a new domain, even if the computer is already joined to a domain.
   # 1 (0x1)   Default. Joins a computer to a domain. If this value is not specified, the join is a computer to a workgroup.
   if $force {
-    $fjoinoption = '32'
+    $_fjoinoption = '32'
   }else{
-    $fjoinoption = '1'
+    $_fjoinoption = $fjoinoption
   }
 
   # Since the powershell command is combersome, we'll construct it here for clarity... well, almost clarity
   #
-  $command = "(Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',${_password},'${username}@${domain}',${_machine_ou},${fjoinoption})"
+  $command = "(Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',${_password},'${username}@${domain}',${_machine_ou},${_fjoinoption})"
 
   exec { 'join_domain':
     command  => $command,
