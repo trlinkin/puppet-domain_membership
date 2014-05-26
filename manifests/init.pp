@@ -54,7 +54,6 @@ class domain_membership (
   $password,
   $secure_password = false,
   $machine_ou      = undef,
-  $force           = false,
   $resetpw         = true,
   $fjoinoption     = '1',
 ){
@@ -62,7 +61,6 @@ class domain_membership (
   # Validate Parameters
   validate_string($username)
   validate_string($password)
-  validate_bool($force)
   validate_bool($resetpw)
   validate_re($fjoinoption, '\d+', 'fjoinoption parameter must be a number.')
   unless is_domain_name($domain) {
@@ -86,20 +84,9 @@ class domain_membership (
     $_machine_ou = '$null'
   }
 
-  # $force toggles between two types of joins, these are just a small selection
-  # from the overall set of join choices.
-  #
-  # 32 (0x20) Allows a join to a new domain, even if the computer is already joined to a domain.
-  # 1 (0x1)   Default. Joins a computer to a domain. If this value is not specified, the join is a computer to a workgroup.
-  if $force {
-    $_fjoinoption = '32'
-  }else{
-    $_fjoinoption = $fjoinoption
-  }
-
   # Since the powershell command is combersome, we'll construct it here for clarity... well, almost clarity
   #
-  $command = "(Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',${_password},'${username}@${domain}',${_machine_ou},${_fjoinoption})"
+  $command = "(Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',${_password},'${username}@${domain}',${_machine_ou},${fjoinoption})"
 
   exec { 'join_domain':
     command  => $command,

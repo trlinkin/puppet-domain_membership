@@ -10,18 +10,17 @@ Parameters
  * ```username```    - User with ability to join machines to a Domain.
  * ```password```    - Password for domain joining user.
  * ```machine_ou```  - [Optional] OU in the directory for the machine account to be created in.
- * ```force```       - [Optional] Whether or not to attempt to force joining domain even if the machine already has a domain membership.Valid values are `true` and `false`. Defaults to `false`
  * ```resetpw```     - [Optional] Whetehr of not to force machine password reset if it becomes out of sync with the domain.
- * ```fjoinoption``` - [Optional] A bit flag for an option to use when joining the domain. See http://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx Defaults to '1'.
+ * ```fjoinoption``` - [Optional] A bit flag for an option to use when joining the domain. See http://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx Defaults to '1' (default domain join).
 
 Usage
 -----
 
         class { 'domain_membership':
-          domain   => 'puppet.example',
-          username => 'joinmember',
-          password => 'sUp3r_s3cR3t!',
-          force    => true,
+          domain       => 'puppet.example',
+          username     => 'joinmember',
+          password     => 'sUp3r_s3cR3t!',
+          fjoinoptions => '32',
         }
 
 License
