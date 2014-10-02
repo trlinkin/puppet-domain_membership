@@ -1,0 +1,21 @@
+{
+  "name": "trlinkin-domain_membership",
+  "version": "0.0.1",
+  "author": "Thomas Linkin <trlinkin@gmail.com>",
+  "license": "Licensed under (Apache 2.0)",
+  "summary": "Module for managing AD domain membership of Windows systems.",
+  "source": "https://github.com/trlinkin/puppet-domain_membership",
+  "project_page": "(https://github.com/trlinkin/puppet-domain_membership)",
+  "issues_url": "https://github.com/trlinkin/puppet-domain_membership/issues",
+  "tags": ["windows", "AD", "active directory", "domain"],
+  "operatingsystem_support": [
+    {
+    "operatingsystem":"Windows",
+    "operatingsystemrelease":[ "Server 2008", "Server 2008 R2", "Server 2012", "Server 2012 R2", "7", "8" ]
+    }
+   ],
+  "dependencies": [
+    { "name": "joshcooper/powershell", "version_requirement": ">= 0.0.5" },
+    { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.1.0" }
+  ]
+}
