@@ -25,7 +25,7 @@
 #   Whether or not to force a machine password reset if for some reason the trust
 #   between the domain and the machine becomes unsyncronized. Valid values are `true`
 #   and `false`. Defaults to `true`.
-# [*fjoinoption*]
+# [*join_options*]
 #   A bit flag for setting options for joining a domain.
 #   See: http://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx
 #   Defaults to '1'.
@@ -33,11 +33,11 @@
 # === Examples
 #
 #  class { domain_membership:
-#    domain   => 'pupetlabs.lan',
-#    username => 'administrator',
-#    password => 'fake5ecret',
-#    force    => true,
-#    resetpw  => false,
+#    domain        => 'pupetlabs.lan',
+#    username      => 'administrator',
+#    password      => 'fake5ecret',
+#    force         => true,
+#    join_options  => '3',
 #  }
 #
 # === Authors
@@ -55,14 +55,14 @@ class domain_membership (
   $secure_password = false,
   $machine_ou      = undef,
   $resetpw         = true,
-  $fjoinoption     = '1',
+  $join_options     = '1',
 ){
 
   # Validate Parameters
   validate_string($username)
   validate_string($password)
   validate_bool($resetpw)
-  validate_re($fjoinoption, '\d+', 'fjoinoption parameter must be a number.')
+  validate_re($join_options, '\d+', 'join_options parameter must be a number.')
   unless is_domain_name($domain) {
     fail('Class[domain_membership] domain parameter must be a valid rfc1035 domain name')
   }
@@ -86,7 +86,7 @@ class domain_membership (
 
   # Since the powershell command is combersome, we'll construct it here for clarity... well, almost clarity
   #
-  $command = "(Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',${_password},'${username}@${domain}',${_machine_ou},${fjoinoption})"
+  $command = "(Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',${_password},'${username}@${domain}',${_machine_ou},${join_options})"
 
   exec { 'join_domain':
     command  => $command,

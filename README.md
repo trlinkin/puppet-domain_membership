@@ -6,12 +6,12 @@ Manage Active Directory domain membership with this module.
 Parameters
 ----------
 
- * ```domain```      - AD domain which the node should be a member of.
- * ```username```    - User with ability to join machines to a Domain.
- * ```password```    - Password for domain joining user.
- * ```machine_ou```  - [Optional] OU in the directory for the machine account to be created in.
- * ```resetpw```     - [Optional] Whetehr of not to force machine password reset if it becomes out of sync with the domain.
- * ```fjoinoption``` - [Optional] A bit flag for an option to use when joining the domain. See http://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx Defaults to '1' (default domain join).
+ * ```domain```       - AD domain which the node should be a member of.
+ * ```username```     - User with ability to join machines to a Domain.
+ * ```password```     - Password for domain joining user.
+ * ```machine_ou```   - [Optional] OU in the directory for the machine account to be created in.
+ * ```resetpw```      - [Optional] Whetehr of not to force machine password reset if it becomes out of sync with the domain.
+ * ```join_options``` - [Optional] A bit field for options to use when joining the domain. See http://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx Defaults to '1' (default domain join).
 
 Usage
 -----
@@ -20,7 +20,7 @@ Usage
           domain       => 'puppet.example',
           username     => 'joinmember',
           password     => 'sUp3r_s3cR3t!',
-          fjoinoptions => '32',
+          join_options => '3',
         }
 
 License
