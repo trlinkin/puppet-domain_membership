@@ -28,6 +28,28 @@ Contact
 
   If you have questions or concerns about this module, email me at tom@puppetlabs.com
 
+Changelog
+---------
+
+* Thomas Linkin <trlinkin@gmail.com> -- Update module dependancy
+* Thomas Linkin <trlinkin@gmail.com> -- Move license to LICENSE file to conform with Forge rules.
+* Thomas Linkin <trlinkin@gmail.com> -- Correct some rubbish typos in the docs
+* Thomas Linkin <trlinkin@gmail.com> -- Bunp version to 1.0.0 for release
+* Thomas Linkin <trlinkin@gmail.com> -- Converting to metadata.json
+* Thomas Linkin <trlinkin@gmail.com> -- Clean up fjoinoptions parameter
+* Thomas Linkin <trlinkin@gmail.com> -- Remove `false` parameter in favor of `fjoinoption`
+* Thomas Linkin <trlinkin@gmail.com> -- Merge remote-tracking branch 'beard/fjoinoption'
+* Thomas Linkin <tom@puppetlabs.com> -- Merge pull request #2 from ghoneycutt/patch-1
+* Josh Beard <beard@puppetlabs.com> -- Fix alignment of parameter list in README
+* Josh Beard <beard@puppetlabs.com> -- Add 'fjoinoption' as a parameter
+* Garrett Honeycutt <github@garretthoneycutt.com> -- Update README.md
+* Thomas Linkin <trlinkin@gmail.com> -- Fill out docs further
+* Thomas Linkin <trlinkin@gmail.com> -- Add $resetpw parameter
+* Thomas Linkin <trlinkin@gmail.com> -- Readme content added
+* Thomas Linkin <trlinkin@gmail.com> -- Ensure resource relationships
+* Thomas Linkin <trlinkin@gmail.com> -- Reset Computer Account Password
+* Thomas Linkin <trlinkin@gmail.com> -- Initial Commit
+
 Support
 -------
 
