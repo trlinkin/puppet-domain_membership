@@ -15,7 +15,7 @@
     }
    ],
   "dependencies": [
-    { "name": "joshcooper/powershell", "version_requirement": ">= 0.0.5" },
+    { "name": "puppetlabs/powershell", "version_requirement": ">= 1.0.1" },
     { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.1.0" }
   ]
 }
