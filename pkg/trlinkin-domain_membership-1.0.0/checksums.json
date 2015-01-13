@@ -1,0 +1,7 @@
+{
+  "README.md": "2cb9accfd46ad52cd6e65745db549a87",
+  "manifests/init.pp": "dfd8371b7d5bb1d394f75cd1fe6396a7",
+  "metadata.json": "d240838ca609f1bf6493a1b2f4cd1e88",
+  "spec/spec_helper.rb": "a55d1e6483344f8ec6963fcb2c220372",
+  "tests/init.pp": "9ed91ca699f5a844b2b1dcde6b168e07"
+}
