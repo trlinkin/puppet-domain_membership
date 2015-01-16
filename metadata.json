@@ -5,7 +5,6 @@
   "license": "Licensed under (Apache 2.0)",
   "summary": "Module for managing AD domain membership of Windows systems.",
   "source": "https://github.com/trlinkin/puppet-domain_membership",
-  "project_page": "(https://github.com/trlinkin/puppet-domain_membership)",
   "issues_url": "https://github.com/trlinkin/puppet-domain_membership/issues",
   "tags": ["windows", "AD", "active directory", "domain"],
   "operatingsystem_support": [
