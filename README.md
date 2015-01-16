@@ -31,6 +31,7 @@ Contact
 Changelog
 ---------
 
+* Ben Ford <ben.ford@puppetlabs.com> -- Use the join return value for success
 * Thomas Linkin <trlinkin@gmail.com> -- Update module dependancy
 * Thomas Linkin <trlinkin@gmail.com> -- Move license to LICENSE file to conform with Forge rules.
 * Thomas Linkin <trlinkin@gmail.com> -- Correct some rubbish typos in the docs
