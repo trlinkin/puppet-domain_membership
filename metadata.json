@@ -1,6 +1,6 @@
 {
   "name": "trlinkin-domain_membership",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Thomas Linkin <trlinkin@gmail.com>",
   "license": "Licensed under (Apache 2.0)",
   "summary": "Module for managing AD domain membership of Windows systems.",
@@ -15,6 +15,7 @@
    ],
   "dependencies": [
     { "name": "puppetlabs/powershell", "version_requirement": ">= 1.0.1" },
-    { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.1.0" }
+    { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.1.0" },
+    { "name": "puppetlabs/reboot", "version_requirement": ">= 0.9.1" }
   ]
 }

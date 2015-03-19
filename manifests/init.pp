@@ -30,6 +30,10 @@
 #   See: http://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx
 #   Defaults to '1'.
 #
+# [*reboot*]
+#   Wether or not the computer should reboot after a domain join.
+#   Valid values are 'true' and 'false'. Defaults to 'true'.
+#
 # === Examples
 #
 #  class { domain_membership:
@@ -55,6 +59,7 @@ class domain_membership (
   $secure_password = false,
   $machine_ou      = undef,
   $resetpw         = true,
+  $reboot          = true,
   $join_options     = '1',
 ){
 
@@ -100,6 +105,13 @@ class domain_membership (
       unless   => "if ($(nltest /sc_verify:${domain}) -match 'ERROR_INVALID_PASSWORD') {exit 1}",
       provider => powershell,
       require  => Exec['join_domain'],
+    }
+  }
+
+  if $reboot {
+    reboot { 'after':
+      subscribe => Exec['join_domain'],
+      apply     => finished,
     }
   }
 }
