@@ -11,6 +11,7 @@ Parameters
  * ```password```     - Password for domain joining user.
  * ```machine_ou```   - [Optional] OU in the directory for the machine account to be created in.
  * ```resetpw```      - [Optional] Whether or not to force machine password reset if it becomes out of sync with the domain.
+ * ```reboot```       - [Optional] Whether or not to reboot when the machine joins the domain. (reboot by default)
  * ```join_options``` - [Optional] A bit field for options to use when joining the domain. See http://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx Defaults to '1' (default domain join).
 
 Usage
@@ -31,6 +32,7 @@ Contact
 Changelog
 ---------
 
+* Wout van Heeswijk <wout.van.heeswijk@gmail.com> -- Added a reboot option
 * Ben Ford <ben.ford@puppetlabs.com> -- Use the join return value for success
 * Thomas Linkin <trlinkin@gmail.com> -- Update module dependancy
 * Thomas Linkin <trlinkin@gmail.com> -- Move license to LICENSE file to conform with Forge rules.
