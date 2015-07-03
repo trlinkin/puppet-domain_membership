@@ -18,9 +18,6 @@
 # [*machine_ou*]
 #   OU in the domain to create the machine account in. This is used durring
 #   the initial join process. It cannot move the machine account later on.
-# [*force*]
-#   Forces the machine to join a new domain even if it has prior membership
-#   to other domains. Valid values are `true` and `false`. Defaults to `false`.
 # [*resetpw*]
 #   Whether or not to force a machine password reset if for some reason the trust
 #   between the domain and the machine becomes unsyncronized. Valid values are `true`
@@ -29,7 +26,6 @@
 #   A bit flag for setting options for joining a domain.
 #   See: http://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx
 #   Defaults to '1'.
-#
 # [*reboot*]
 #   Wether or not the computer should reboot after a domain join.
 #   Valid values are 'true' and 'false'. Defaults to 'true'.
@@ -40,7 +36,6 @@
 #    domain        => 'pupetlabs.lan',
 #    username      => 'administrator',
 #    password      => 'fake5ecret',
-#    force         => true,
 #    join_options  => '3',
 #  }
 #
