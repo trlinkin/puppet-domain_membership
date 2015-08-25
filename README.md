@@ -13,6 +13,7 @@ Parameters
  * ```resetpw```      - [Optional] Whether or not to force machine password reset if it becomes out of sync with the domain.
  * ```reboot```       - [Optional] Whether or not to reboot when the machine joins the domain. (reboot by default)
  * ```join_options``` - [Optional] A bit field for options to use when joining the domain. See http://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx Defaults to '1' (default domain join).
+ * ```user_domain```  - [Optional] Domain of user account used to join machine, if different from domain machine will be joined to.  If not specified, ```domain``` will be used.
 
 Usage
 -----
@@ -32,6 +33,7 @@ Contact
 Changelog
 ---------
 
+* Alex Harden <aharden@gmail.com> -- Added a user_domain option.
 * Wout van Heeswijk <wout.van.heeswijk@gmail.com> -- Added a reboot option
 * Ben Ford <ben.ford@puppetlabs.com> -- Use the join return value for success
 * Thomas Linkin <trlinkin@gmail.com> -- Update module dependancy
