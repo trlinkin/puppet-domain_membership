@@ -27,8 +27,11 @@
 #   See: http://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx
 #   Defaults to '1'.
 # [*reboot*]
-#   Wether or not the computer should reboot after a domain join.
+#   Whether or not the computer should reboot after a domain join.
 #   Valid values are 'true' and 'false'. Defaults to 'true'.
+# [*user_domain*]
+#   Domain the account with the specified username belongs to, if different
+#   from the domain the machine is being joined to.
 #
 # === Examples
 #
@@ -55,7 +58,8 @@ class domain_membership (
   $machine_ou      = undef,
   $resetpw         = true,
   $reboot          = true,
-  $join_options     = '1',
+  $join_options    = '1',
+  $user_domain     = undef,
 ){
 
   # Validate Parameters
@@ -84,9 +88,21 @@ class domain_membership (
     $_machine_ou = '$null'
   }
 
+  # Allow an optional user_domain to accomodate multi-domain AD forests
+  if $user_domain {
+    unless is_domain_name($user_domain) {
+      fail('Class[domain_membership] user_domain parameter must be a valid rfc1035 domain name')
+    }
+    $_user_domain = $user_domain
+    $_reset_username = "${user_domain}\\${username}"
+  } else {
+    $_user_domain = $domain
+    $_reset_username = $username
+  }
+
   # Since the powershell command is combersome, we'll construct it here for clarity... well, almost clarity
   #
-  $command = "(Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',${_password},'${username}@${domain}',${_machine_ou},${join_options})"
+  $command = "(Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',${_password},'${username}@${_user_domain}',${_machine_ou},${join_options})"
 
   exec { 'join_domain':
     command  => "exit ${command}.ReturnValue",
@@ -96,7 +112,7 @@ class domain_membership (
 
   if $resetpw {
     exec { 'reset_computer_trust':
-      command  => "netdom /RESETPWD /UserD:${username} /PasswordD:${_password} /Server:${domain}",
+      command  => "netdom /RESETPWD /UserD:${_reset_username} /PasswordD:${_password} /Server:${domain}",
       unless   => "if ($(nltest /sc_verify:${domain}) -match 'ERROR_INVALID_PASSWORD') {exit 1}",
       provider => powershell,
       require  => Exec['join_domain'],
