@@ -2,11 +2,11 @@
   "name": "trlinkin-domain_membership",
   "version": "1.0.3",
   "author": "Thomas Linkin <trlinkin@gmail.com>",
-  "license": "Licensed under (Apache 2.0)",
+  "license": "Apache-2.0",
   "summary": "Module for managing AD domain membership of Windows systems.",
   "source": "https://github.com/trlinkin/puppet-domain_membership",
   "issues_url": "https://github.com/trlinkin/puppet-domain_membership/issues",
-  "tags": ["windows", "AD", "active directory", "domain"],
+  "tags": ["AD", "active directory", "domain"],
   "operatingsystem_support": [
     {
     "operatingsystem":"Windows",
