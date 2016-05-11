@@ -75,7 +75,7 @@ class domain_membership (
   if $secure_password {
     $_password = "(New-Object System.Management.Automation.PSCredential('user',(convertto-securestring '${password}'))).GetNetworkCredential().password"
   }else{
-    $_password = "'$password'"
+    $_password = "'${password}'"
   }
 
   # Allow an optional OU location for the creation of the machine
