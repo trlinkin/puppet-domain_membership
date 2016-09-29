@@ -1,10 +1,8 @@
-domain_membership
-=================
+# domain_membership
 
 Manage Active Directory domain membership with this module.
 
-Parameters
-----------
+## Parameters
 
  * ```domain```       - AD domain which the node should be a member of.
  * ```username```     - User with ability to join machines to a Domain.
@@ -15,23 +13,25 @@ Parameters
  * ```join_options``` - [Optional] A bit field for options to use when joining the domain. See http://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx Defaults to '1' (default domain join).
  * ```user_domain```  - [Optional] Domain of user account used to join machine, if different from domain machine will be joined to.  If not specified, ```domain``` will be used.
 
-Usage
------
+## Usage
 
-        class { 'domain_membership':
-          domain       => 'puppet.example',
-          username     => 'joinmember',
-          password     => 'sUp3r_s3cR3t!',
-          join_options => '3',
-        }
 
-Contact
--------
+
+## Example
+```ruby
+class { 'domain_membership':
+  domain       => 'puppet.example',
+  username     => 'joinmember',
+  password     => 'sUp3r_s3cR3t!',
+  join_options => '3',
+}
+```
+
+## Contact
 
   If you have questions or concerns about this module, email me at tom@puppetlabs.com
 
-Changelog
----------
+## Changelog
 
 * Thomas Linkin ,trlinkin@gmail.com> -- Fix variable usage in interpolated string
 * Thomas Linkin ,trlinkin@gmail.com> -- Fix issues with metadata.json
@@ -57,7 +57,6 @@ Changelog
 * Thomas Linkin <trlinkin@gmail.com> -- Reset Computer Account Password
 * Thomas Linkin <trlinkin@gmail.com> -- Initial Commit
 
-Support
--------
+## Support
 
 Please log tickets and issues at our [Projects site](http://www.github.com/trlinkin/puppet-domain_membership)
