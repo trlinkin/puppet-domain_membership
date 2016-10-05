@@ -51,9 +51,14 @@ class { 'domain_membership':
   If you have questions or concerns about this module, email me at tom@puppetlabs.com
 
 ## Changelog
-
-* Thomas Linkin ,trlinkin@gmail.com> -- Fix variable usage in interpolated string
-* Thomas Linkin ,trlinkin@gmail.com> -- Fix issues with metadata.json
+* Thomas Linkin <trlinkin@gmail.com> -- Update puppetlabs/reboot dependency
+* Thomas Linkin <trlinkin@gmail.com> -- Extend README documentation
+* Thomas Linkin <trlinkin@gmail.com> -- Cleanup documentation formatting
+* Thomas Linkin <trlinkin@gmail.com> -- Bump release to 1.1.1
+* Thomas Linkin <trlinkin@gmail.com> -- Remove pkg directory, dammit
+* Thomas Linkin <trlinkin@gmail.com> -- Bump to 1.1.0 release
+* Thomas Linkin <trlinkin@gmail.com> -- Fix variable usage in interpolated string
+* Thomas Linkin <trlinkin@gmail.com> -- Fix issues with metadata.json
 * Alex Harden <aharden@gmail.com> -- Added a user_domain option.
 * Wout van Heeswijk <wout.van.heeswijk@gmail.com> -- Added a reboot option
 * Ben Ford <ben.ford@puppetlabs.com> -- Use the join return value for success
