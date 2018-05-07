@@ -1,6 +1,6 @@
 {
   "name": "trlinkin-domain_membership",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "author": "Thomas Linkin <trlinkin@gmail.com>",
   "summary": "Module for managing AD domain membership of Windows systems.",
   "license": "Apache-2.0",
