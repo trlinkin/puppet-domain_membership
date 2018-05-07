@@ -10,6 +10,7 @@ Manage Active Directory domain membership with this module.
  * ```machine_ou```   - [Optional] OU in the directory for the machine account to be created in.
  * ```resetpw```      - [Optional] Whether or not to force machine password reset if it becomes out of sync with the domain.
  * ```reboot```       - [Optional] Whether or not to reboot when the machine joins the domain. (reboot by default)
+ * ```reboot_apply``` - [Optional] If `reboot` is true, this controls the `apply` parameter. (defaults to 'finished')
  * ```join_options``` - [Optional] A bit field for options to use when joining the domain. See http://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx Defaults to '1' (default domain join).
  * ```user_domain```  - [Optional] Domain of user account used to join machine, if different from domain machine will be joined to.  If not specified, the value passed to the `domain` parameter will be used.
 

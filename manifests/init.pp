@@ -58,6 +58,7 @@ class domain_membership (
   $machine_ou      = undef,
   $resetpw         = true,
   $reboot          = true,
+  $reboot_apply    = 'finished',
   $join_options    = '1',
   $user_domain     = undef,
 ){
@@ -67,6 +68,7 @@ class domain_membership (
   validate_string($password)
   validate_bool($resetpw)
   validate_re($join_options, '\d+', 'join_options parameter must be a number.')
+  validate_re($reboot_apply, 'immediately|finished', 'reboot_apply only accepts "immediately" or "finished"')
   unless is_domain_name($domain) {
     fail('Class[domain_membership] domain parameter must be a valid rfc1035 domain name')
   }
@@ -120,9 +122,9 @@ class domain_membership (
   }
 
   if $reboot {
-    reboot { 'after':
+    reboot { 'after_domain_join':
       subscribe => Exec['join_domain'],
-      apply     => finished,
+      apply     => $reboot_apply,
     }
   }
 }
