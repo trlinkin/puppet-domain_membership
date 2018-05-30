@@ -51,33 +51,28 @@
 # Copyright 2013 Thomas Linkin, unless otherwise noted.
 #
 class domain_membership (
-  $domain,
-  $username,
-  $password,
-  $secure_password = false,
-  $machine_ou      = undef,
-  $resetpw         = true,
-  $reboot          = true,
-  $reboot_apply    = 'finished',
-  $join_options    = '1',
-  $user_domain     = undef,
+  String $domain,
+  String $username,
+  String $password,
+  Boolean $secure_password                      = false,
+  String $machine_ou                            = undef,
+  Boolean $resetpw                              = true,
+  Boolean $reboot                               = true,
+  Pattern[/immediately|finished/] $reboot_apply = 'finished',
+  Pattern[/\d+/] $join_options                  = '1',
+  String $user_domain                           = undef,
 ){
 
   # Validate Parameters
-  validate_string($username)
-  validate_string($password)
-  validate_bool($resetpw)
-  validate_re($join_options, '\d+', 'join_options parameter must be a number.')
-  validate_re($reboot_apply, 'immediately|finished', 'reboot_apply only accepts "immediately" or "finished"')
   unless is_domain_name($domain) {
     fail('Class[domain_membership] domain parameter must be a valid rfc1035 domain name')
   }
 
   # Use Either a "Secure String" password or an unencrypted password
   if $secure_password {
-    $_password = "(New-Object System.Management.Automation.PSCredential('user',(convertto-securestring '${password}'))).GetNetworkCredential().password"
+    $_password = Sensitive("(New-Object System.Management.Automation.PSCredential('user',(convertto-securestring '${password}'))).GetNetworkCredential().password")
   }else{
-    $_password = "'${password}'"
+    $_password = Sensitive("'${password}'")
   }
 
   # Allow an optional OU location for the creation of the machine
