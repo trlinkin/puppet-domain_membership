@@ -51,22 +51,17 @@
 # Copyright 2013 Thomas Linkin, unless otherwise noted.
 #
 class domain_membership (
-  String $domain,
+  Stdlib::Fqdn $domain,
+  Optional[Stdlib::Fqdn] $user_domain,
   String $username,
   String $password,
   Boolean $secure_password                      = false,
-  String $machine_ou                            = undef,
+  String $machine_ou                            = '$null',
   Boolean $resetpw                              = true,
   Boolean $reboot                               = true,
   Pattern[/immediately|finished/] $reboot_apply = 'finished',
   Pattern[/\d+/] $join_options                  = '1',
-  String $user_domain                           = undef,
 ){
-
-  # Validate Parameters
-  unless is_domain_name($domain) {
-    fail('Class[domain_membership] domain parameter must be a valid rfc1035 domain name')
-  }
 
   # Use Either a "Secure String" password or an unencrypted password
   if $secure_password {
@@ -75,44 +70,28 @@ class domain_membership (
     $_password = Sensitive("'${password}'")
   }
 
-  # Allow an optional OU location for the creation of the machine
-  # account to be specified. If unset, we use the powershell representation
-  # of nil, which is the `$null` variable.
-  if $machine_ou {
-    validate_string($machine_ou)
-    $_machine_ou = "'${machine_ou}'"
-  }else{
-    $_machine_ou = '$null'
-  }
-
   # Allow an optional user_domain to accomodate multi-domain AD forests
   if $user_domain {
-    unless is_domain_name($user_domain) {
-      fail('Class[domain_membership] user_domain parameter must be a valid rfc1035 domain name')
-    }
-    $_user_domain = $user_domain
     $_reset_username = "${user_domain}\\${username}"
   } else {
-    $_user_domain = $domain
+    $user_domain = $domain
     $_reset_username = $username
   }
 
-  # Since the powershell command is combersome, we'll construct it here for clarity... well, almost clarity
-  #
-  $command = "(Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',${_password},'${username}@${_user_domain}',${_machine_ou},${join_options})"
-
   exec { 'join_domain':
-    command  => "exit ${command}.ReturnValue",
-    unless   => "if((Get-WmiObject -Class Win32_ComputerSystem).domain -ne '${domain}'){ exit 1 }",
-    provider => powershell,
+    environment => [ "Password=${_password}" ],
+    command     => "exit (Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',\$Password,'${username}@${user_domain}',${machine_ou},${join_options}).ReturnValue",
+    unless      => "if((Get-WmiObject -Class Win32_ComputerSystem).domain -ne '${domain}'){ exit 1 }",
+    provider    => powershell,
   }
 
   if $resetpw {
     exec { 'reset_computer_trust':
-      command  => "netdom /RESETPWD /UserD:${_reset_username} /PasswordD:${_password} /Server:${domain}",
-      unless   => "if ($(nltest /sc_verify:${domain}) -match 'ERROR_INVALID_PASSWORD') {exit 1}",
-      provider => powershell,
-      require  => Exec['join_domain'],
+      environment => [ "Password=${_password}" ],
+      command     => "netdom /RESETPWD /UserD:${_reset_username} /PasswordD:\$Password /Server:${domain}",
+      unless      => "if ($(nltest /sc_verify:${domain}) -match 'ERROR_INVALID_PASSWORD') {exit 1}",
+      provider    => powershell,
+      require     => Exec['join_domain'],
     }
   }
 
