@@ -52,9 +52,9 @@
 #
 class domain_membership (
   Stdlib::Fqdn $domain,
-  Optional[Stdlib::Fqdn] $user_domain,
   String $username,
   String $password,
+  Optional[Stdlib::Fqdn] $user_domain           = undef,
   Boolean $secure_password                      = false,
   String $machine_ou                            = '$null',
   Boolean $resetpw                              = true,
@@ -72,15 +72,16 @@ class domain_membership (
 
   # Allow an optional user_domain to accomodate multi-domain AD forests
   if $user_domain {
+    $_user_domain = $user_domain
     $_reset_username = "${user_domain}\\${username}"
   } else {
-    $user_domain = $domain
+    $_user_domain = $domain
     $_reset_username = $username
   }
 
   exec { 'join_domain':
     environment => [ "Password=${_password}" ],
-    command     => "exit (Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',\$Password,'${username}@${user_domain}',${machine_ou},${join_options}).ReturnValue",
+    command     => "exit (Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',\$Password,'${username}@${_user_domain}',${machine_ou},${join_options}).ReturnValue",
     unless      => "if((Get-WmiObject -Class Win32_ComputerSystem).domain -ne '${domain}'){ exit 1 }",
     provider    => powershell,
   }

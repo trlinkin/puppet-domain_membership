@@ -2,6 +2,8 @@ fixtures:
   repositories:
     stdlib:
       repo: "git://github.com/puppetlabs/puppetlabs-stdlib"
-      ref: "4.3.2"
+      ref: "a656880f13cc13a30baa892dcc4c8e3efefcc867"
+    reboot: "git://github.com/puppetlabs/puppetlabs-reboot"
+    powershell: "git://github.com/puppetlabs/puppetlabs-powershell"
   symlinks:
     domain_membership: "#{source_dir}"
