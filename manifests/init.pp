@@ -53,7 +53,7 @@
 class domain_membership (
   Stdlib::Fqdn $domain,
   String $username,
-  String $password,
+  Variant[String,Sensitive] $password,
   Optional[Stdlib::Fqdn] $user_domain           = undef,
   Boolean $secure_password                      = false,
   String $machine_ou                            = '$null',
@@ -63,11 +63,16 @@ class domain_membership (
   Pattern[/\d+/] $join_options                  = '1',
 ){
 
+  $this_password = ($password =~ Sensitive) ? {
+    true  => $password,
+    false => Sensitive($password)
+  }
+
   # Use Either a "Secure String" password or an unencrypted password
   if $secure_password {
-    $_password = Sensitive("(New-Object System.Management.Automation.PSCredential('user',(convertto-securestring '${password}'))).GetNetworkCredential().password")
+    $_password = ("(New-Object System.Management.Automation.PSCredential('user',(convertto-securestring '${this_password}'))).GetNetworkCredential().password")
   }else{
-    $_password = Sensitive("'${password}'")
+    $_password = "'${this_password}'"
   }
 
   # Allow an optional user_domain to accomodate multi-domain AD forests
