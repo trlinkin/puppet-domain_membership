@@ -59,7 +59,7 @@ class domain_membership (
   String $machine_ou                            = '$null',
   Boolean $resetpw                              = true,
   Boolean $reboot                               = true,
-  Pattern[/immediately|finished/] $reboot_apply = 'finished',
+  Enum['immediately', 'finished'] $reboot_apply = 'finished',
   Pattern[/\d+/] $join_options                  = '1',
 ){
 
