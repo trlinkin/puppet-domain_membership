@@ -59,6 +59,7 @@ class domain_membership (
   $resetpw         = true,
   $reboot          = true,
   $reboot_apply    = 'finished',
+  $reboot_timeout  = '60',
   $join_options    = '1',
   $user_domain     = undef,
 ){
@@ -125,6 +126,7 @@ class domain_membership (
     reboot { 'after_domain_join':
       subscribe => Exec['join_domain'],
       apply     => $reboot_apply,
+      timeout   => $reboot_timeout,
     }
   }
 }
