@@ -5,8 +5,7 @@
 # === Parameters
 #
 # [*domain*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
+#   AD domain which the node should be a member of.
 # [*username*]
 #   Username of domain user with machine join privileges.
 # [*password*]
