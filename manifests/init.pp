@@ -88,6 +88,7 @@ class domain_membership (
     command     => "exit (Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',\$Password,'${username}@${_user_domain}',${machine_ou},${join_options}).ReturnValue",
     unless      => "if((Get-WmiObject -Class Win32_ComputerSystem).domain -ne '${domain}'){ exit 1 }",
     provider    => powershell,
+    logoutput   => false,
   }
 
   if $resetpw {
