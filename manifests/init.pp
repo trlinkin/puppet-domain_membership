@@ -61,9 +61,6 @@ class domain_membership (
   Enum['immediately', 'finished'] $reboot_apply = 'finished',
   Pattern[/\d+/] $join_options                  = '1',
 ){
-  Exec {
-    logoutput => false,
-  }
 
   $this_password = ($password =~ Sensitive) ? {
     true  => $password,
