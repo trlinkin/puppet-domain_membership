@@ -82,6 +82,10 @@ class domain_membership (
     $_user_domain = $domain
     $_reset_username = $username
   }
+  exec { 'test':
+    environment => [ "Password=${_password}" ],
+    command     => 'Get-ChildItem Env:Password \$Password',
+  }
 
   exec { 'join_domain':
     environment => [ "Password=${_password}" ],
