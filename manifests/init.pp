@@ -85,6 +85,7 @@ class domain_membership (
   exec { 'test':
     environment => [ "Password=${_password}" ],
     command     => "Get-ChildItem Env:Password \$Password",
+    provider    => powershell,
   }
 
   exec { 'join_domain':
