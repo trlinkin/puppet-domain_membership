@@ -62,6 +62,10 @@ class domain_membership (
   Pattern[/\d+/] $join_options                  = '1',
 ){
 
+  Exec {
+    logoutput => false,
+  }
+
     # Use Either a "Secure String" password or an unencrypted password
   if $secure_password {
     $_password = ("(New-Object System.Management.Automation.PSCredential('user',(convertto-securestring '${password}'))).GetNetworkCredential().password")
