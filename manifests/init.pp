@@ -71,7 +71,7 @@ class domain_membership (
   if $secure_password {
     $_password = ("(New-Object System.Management.Automation.PSCredential('user',(convertto-securestring '${this_password}'))).GetNetworkCredential().password")
   }else{
-    $_password = "'${this_password}'"
+    $_password = $this_password.unwrap
   }
 
   # Allow an optional user_domain to accomodate multi-domain AD forests
@@ -83,8 +83,8 @@ class domain_membership (
     $_reset_username = $username
   }
   exec { 'join_domain':
-    environment => [ "Password=${this_password}" ],
-    command     => "exit (Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}','${this_password}.unwrap','${username}@${_user_domain}',${machine_ou},${join_options}).ReturnValue",
+    environment => [ "Password=${_password}" ],
+    command     => "exit (Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',\$Password,'${username}@${_user_domain}',${machine_ou},${join_options}).ReturnValue",
     unless      => "if((Get-WmiObject -Class Win32_ComputerSystem).domain -ne '${domain}'){ exit 1 }",
     provider    => powershell,
   }
