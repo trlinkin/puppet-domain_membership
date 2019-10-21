@@ -62,16 +62,11 @@ class domain_membership (
   Pattern[/\d+/] $join_options                  = '1',
 ){
 
-  $this_password = ($password =~ Sensitive) ? {
-    true  => $password,
-    false => Sensitive($password)
-  }
-
-  # Use Either a "Secure String" password or an unencrypted password
+    # Use Either a "Secure String" password or an unencrypted password
   if $secure_password {
-    $_password = ("(New-Object System.Management.Automation.PSCredential('user',(convertto-securestring '${this_password}'))).GetNetworkCredential().password")
+    $_password = ("(New-Object System.Management.Automation.PSCredential('user',(convertto-securestring '${password}'))).GetNetworkCredential().password")
   }else{
-    $_password = $this_password.unwrap
+    $_password = $password
   }
 
   # Allow an optional user_domain to accomodate multi-domain AD forests
