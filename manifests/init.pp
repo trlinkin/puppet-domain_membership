@@ -82,16 +82,9 @@ class domain_membership (
     $_user_domain = $domain
     $_reset_username = $username
   }
-  exec { 'test':
-    environment => [ "Password=${_password}" ],
-    command     => "Get-ChildItem Env:Password \$Password",
-    provider    => powershell,
-    logoutput   => true,
-  }
-
   exec { 'join_domain':
     environment => [ "Password=${_password}" ],
-    command     => "exit (Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}','${_password.unwrap}','${username}@${_user_domain}',${machine_ou},${join_options}).ReturnValue",
+    command     => "exit (Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}','${_password}','${username}@${_user_domain}',${machine_ou},${join_options}).ReturnValue",
     unless      => "if((Get-WmiObject -Class Win32_ComputerSystem).domain -ne '${domain}'){ exit 1 }",
     provider    => powershell,
   }
