@@ -62,16 +62,15 @@ class domain_membership (
   Pattern[/\d+/] $join_options                  = '1',
 ){
 
-  $this_password = ($password =~ Sensitive) ? {
-    true  => $password,
-    false => Sensitive($password)
+  Exec {
+    logoutput => false,
   }
 
-  # Use Either a "Secure String" password or an unencrypted password
+    # Use Either a "Secure String" password or an unencrypted password
   if $secure_password {
-    $_password = ("(New-Object System.Management.Automation.PSCredential('user',(convertto-securestring '${this_password}'))).GetNetworkCredential().password")
+    $_password = ("(New-Object System.Management.Automation.PSCredential('user',(convertto-securestring '${password}'))).GetNetworkCredential().password")
   }else{
-    $_password = "'${this_password}'"
+    $_password = $password
   }
 
   # Allow an optional user_domain to accomodate multi-domain AD forests
@@ -82,10 +81,9 @@ class domain_membership (
     $_user_domain = $domain
     $_reset_username = $username
   }
-
   exec { 'join_domain':
     environment => [ "Password=${_password}" ],
-    command     => "exit (Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',\$Password,'${username}@${_user_domain}',${machine_ou},${join_options}).ReturnValue",
+    command     => "exit (Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}','${_password}','${username}@${_user_domain}',${machine_ou},${join_options}).ReturnValue",
     unless      => "if((Get-WmiObject -Class Win32_ComputerSystem).domain -ne '${domain}'){ exit 1 }",
     provider    => powershell,
   }
