@@ -55,7 +55,7 @@ class domain_membership (
   Variant[String,Sensitive] $password,
   Optional[Stdlib::Fqdn] $user_domain           = undef,
   Boolean $secure_password                      = false,
-  String $machine_ou                            = '$null',
+  Pattern[/\A[^\']+\z/] $machine_ou             = undef,
   Boolean $resetpw                              = true,
   Boolean $reboot                               = true,
   Enum['immediately', 'finished'] $reboot_apply = 'finished',
@@ -83,9 +83,14 @@ class domain_membership (
     $_reset_username = $username
   }
 
+  $_machine_ou = $machine_ou ? {
+    undef   => '$null',
+    default => "'${machine_ou}'"
+  }
+
   exec { 'join_domain':
     environment => [ "Password=${_password}" ],
-    command     => "exit (Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',\$Password,'${username}@${_user_domain}',${machine_ou},${join_options}).ReturnValue",
+    command     => "exit (Get-WmiObject -Class Win32_ComputerSystem).JoinDomainOrWorkGroup('${domain}',\$Password,'${username}@${_user_domain}',${_machine_ou},${join_options}).ReturnValue",
     unless      => "if((Get-WmiObject -Class Win32_ComputerSystem).domain -ne '${domain}'){ exit 1 }",
     provider    => powershell,
   }
